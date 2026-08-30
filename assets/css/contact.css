@@ -1,0 +1,9 @@
+.contact{padding:95px clamp(24px,8vw,130px);display:grid;grid-template-columns:1fr 1fr;gap:9vw;align-items:center;background:var(--paper);border-top:1px solid var(--line)}
+.contact h2{font:clamp(38px,4.5vw,64px)/1.08 var(--serif);letter-spacing:-.035em;margin:0 0 15px}
+.contact>div>p:last-child{color:var(--muted)}
+.contact-numbers{display:grid;border-top:1px solid var(--line)}
+.contact-numbers a{display:grid;grid-template-columns:90px 1fr;padding:17px 4px;border-bottom:1px solid var(--line);font:23px var(--serif)}
+.contact-numbers a span{font:9px var(--sans);letter-spacing:.15em;color:var(--green);align-self:center}
+.footer-contact{display:grid;gap:3px}
+.footer-contact a{font-size:10px}
+@media(max-width:800px){.contact{grid-template-columns:1fr;padding:75px 24px}.contact-numbers a{font-size:20px}footer .footer-contact{gap:8px}}

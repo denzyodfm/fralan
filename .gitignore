@@ -1,0 +1,24 @@
+.env
+.DS_Store
+php-server*.log
+runtime/sessions/
+uploads/*
+!uploads/.gitkeep
+
+# Legacy WordPress runtime (the current site does not use WordPress)
+wp-admin/
+wp-includes/
+wp-content/
+wp-*.php
+xmlrpc.php
+wp-cli.phar
+license.txt
+readme.html
+
+# Legacy Docker/WordPress setup
+docker-compose.yml
+scripts/seed.sh
+wp-content/uploads/
+wp-content/cache/
+wp-content/upgrade/
+wp-content/backups/

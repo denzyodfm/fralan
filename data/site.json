@@ -1,0 +1,41 @@
+{
+    "initials": "AR",
+    "logo": "",
+    "name": "Fr. Alan Relliquette",
+    "tagline": "Texts, language & scholarship",
+    "theme": "modern-editorial",
+    "label": "Heritage",
+    "description": "Scholarly, warm, and timeless",
+    "colorPrimary": "#243447",
+    "colorAccent": "#e07a5f",
+    "colorBackground": "#fafaf8",
+    "colorSurface": "#eef1f3",
+    "colorInk": "#18212b",
+    "headingFont": "fraunces",
+    "bodyFont": "manrope",
+    "contactParish": "Immaculate Concepcion Parish",
+    "contactAddress": "Villa Kananga, Butuan City",
+    "contactEmail": "",
+    "contactPhones": [
+        {
+            "label": "TNT",
+            "number": "0951-880-9712"
+        },
+        {
+            "label": "SMART",
+            "number": "0928-870-1387"
+        },
+        {
+            "label": "GLOBE",
+            "number": "0966-866-9261"
+        }
+    ],
+    "socialLinks": {
+        "facebook": "",
+        "instagram": "",
+        "youtube": "",
+        "x": "",
+        "tiktok": "",
+        "linkedin": ""
+    }
+}
