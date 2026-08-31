@@ -31,34 +31,44 @@ if ($loggedIn && $_SERVER['REQUEST_METHOD'] === 'POST' && !isset($_POST['login']
     $notice = saveItems($file, $items) ? 'Content deleted.' : 'Could not save changes.';
   } else {
     $id = preg_replace('/[^a-z0-9-]/', '', $_POST['id'] ?? '') ?: uniqid('entry-');
-    $image = $_POST['existing_image'] ?? 'assets/images/archive-study.png';
-    if (!empty($_FILES['image']['tmp_name'])) {
-      $allowed = ['image/jpeg'=>'jpg','image/png'=>'png','image/webp'=>'webp','image/gif'=>'gif'];
-      $mime = (new finfo(FILEINFO_MIME_TYPE))->file($_FILES['image']['tmp_name']);
-      if (isset($allowed[$mime]) && $_FILES['image']['size'] <= 8*1024*1024) {
-        $name = slugify(pathinfo($_FILES['image']['name'], PATHINFO_FILENAME)).'-'.substr(bin2hex(random_bytes(4)),0,8).'.'.$allowed[$mime];
-        if (move_uploaded_file($_FILES['image']['tmp_name'], __DIR__.'/uploads/'.$name)) $image = 'uploads/'.$name;
-      } else $error = 'Please upload a JPG, PNG, WebP, or GIF smaller than 8 MB.';
-    }
-    $audio = $_POST['existing_audio'] ?? '';
-    if (!empty($_POST['remove_audio'])) $audio = '';
-    if (!empty($_FILES['audio']['tmp_name'])) {
-      $audioTypes = [
-        'audio/mpeg'=>'mp3', 'audio/mp3'=>'mp3', 'audio/wav'=>'wav',
-        'audio/x-wav'=>'wav', 'audio/ogg'=>'ogg', 'audio/mp4'=>'m4a',
-        'audio/x-m4a'=>'m4a', 'video/mp4'=>'m4a', 'audio/webm'=>'webm'
-      ];
-      $audioMime = (new finfo(FILEINFO_MIME_TYPE))->file($_FILES['audio']['tmp_name']);
-      if (isset($audioTypes[$audioMime]) && $_FILES['audio']['size'] <= 30*1024*1024) {
-        $audioName = slugify(pathinfo($_FILES['audio']['name'], PATHINFO_FILENAME)).'-'.substr(bin2hex(random_bytes(4)),0,8).'.'.$audioTypes[$audioMime];
-        if (move_uploaded_file($_FILES['audio']['tmp_name'], __DIR__.'/uploads/'.$audioName)) $audio = 'uploads/'.$audioName;
-      } else $error = 'Please upload an MP3, WAV, OGG, M4A, or WebM audio file smaller than 30 MB.';
-    }
-    if (!$error) {
-      $entry = ['id'=>$id,'slug'=>slugify($_POST['title'] ?? ''),'type'=>($_POST['type'] ?? '') === 'article'?'article':'transliteration','title'=>trim($_POST['title'] ?? ''),'excerpt'=>trim($_POST['excerpt'] ?? ''),'category'=>trim($_POST['category'] ?? ''),'language'=>trim($_POST['language'] ?? ''),'date'=>$_POST['date'] ?? date('Y-m-d'),'image'=>$image,'imageAlt'=>trim($_POST['imageAlt'] ?? ''),'audio'=>$audio,'featured'=>isset($_POST['featured']),'body'=>cleanBody($_POST['body'] ?? '')];
-      $found = false; foreach ($items as $key=>$item) if (($item['id']??'') === $id) { $items[$key]=$entry; $found=true; }
-      if (!$found) $items[]=$entry;
-      $notice = saveItems($file, $items) ? 'Content published successfully.' : 'Could not write to data/content.json.';
+    $title = trim($_POST['title'] ?? '');
+    $excerpt = trim($_POST['excerpt'] ?? '');
+    $category = trim($_POST['category'] ?? '');
+    $body = cleanBody($_POST['body'] ?? '');
+    if ($title === '') $error = 'Please add a title before publishing.';
+    elseif ($excerpt === '') $error = 'Please add a short excerpt.';
+    elseif ($category === '') $error = 'Please add a category.';
+    elseif ($body === '') $error = 'Please add the content body before saving.';
+    else {
+      $image = $_POST['existing_image'] ?? 'assets/images/archive-study.png';
+      if (!empty($_FILES['image']['tmp_name'])) {
+        $allowed = ['image/jpeg'=>'jpg','image/png'=>'png','image/webp'=>'webp','image/gif'=>'gif'];
+        $mime = (new finfo(FILEINFO_MIME_TYPE))->file($_FILES['image']['tmp_name']);
+        if (isset($allowed[$mime]) && $_FILES['image']['size'] <= 8*1024*1024) {
+          $name = slugify(pathinfo($_FILES['image']['name'], PATHINFO_FILENAME)).'-'.substr(bin2hex(random_bytes(4)),0,8).'.'.$allowed[$mime];
+          if (move_uploaded_file($_FILES['image']['tmp_name'], __DIR__.'/uploads/'.$name)) $image = 'uploads/'.$name;
+        } else $error = 'Please upload a JPG, PNG, WebP, or GIF smaller than 8 MB.';
+      }
+      $audio = $_POST['existing_audio'] ?? '';
+      if (!empty($_POST['remove_audio'])) $audio = '';
+      if (!empty($_FILES['audio']['tmp_name'])) {
+        $audioTypes = [
+          'audio/mpeg'=>'mp3', 'audio/mp3'=>'mp3', 'audio/wav'=>'wav',
+          'audio/x-wav'=>'wav', 'audio/ogg'=>'ogg', 'audio/mp4'=>'m4a',
+          'audio/x-m4a'=>'m4a', 'video/mp4'=>'m4a', 'audio/webm'=>'webm'
+        ];
+        $audioMime = (new finfo(FILEINFO_MIME_TYPE))->file($_FILES['audio']['tmp_name']);
+        if (isset($audioTypes[$audioMime]) && $_FILES['audio']['size'] <= 30*1024*1024) {
+          $audioName = slugify(pathinfo($_FILES['audio']['name'], PATHINFO_FILENAME)).'-'.substr(bin2hex(random_bytes(4)),0,8).'.'.$audioTypes[$audioMime];
+          if (move_uploaded_file($_FILES['audio']['tmp_name'], __DIR__.'/uploads/'.$audioName)) $audio = 'uploads/'.$audioName;
+        } else $error = 'Please upload an MP3, WAV, OGG, M4A, or WebM audio file smaller than 30 MB.';
+      }
+      if (!$error) {
+        $entry = ['id'=>$id,'slug'=>slugify($title),'type'=>($_POST['type'] ?? '') === 'article'?'article':'transliteration','title'=>$title,'excerpt'=>$excerpt,'category'=>$category,'language'=>trim($_POST['language'] ?? ''),'date'=>$_POST['date'] ?? date('Y-m-d'),'image'=>$image,'imageAlt'=>trim($_POST['imageAlt'] ?? ''),'audio'=>$audio,'featured'=>isset($_POST['featured']),'body'=>$body];
+        $found = false; foreach ($items as $key=>$item) if (($item['id']??'') === $id) { $items[$key]=$entry; $found=true; }
+        if (!$found) $items[]=$entry;
+        $notice = saveItems($file, $items) ? 'Content published successfully.' : 'Could not write to data/content.json.';
+      }
     }
   }
 }
