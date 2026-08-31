@@ -2,6 +2,8 @@
 $sessionPath = __DIR__ . '/runtime/sessions';
 if (!is_dir($sessionPath)) mkdir($sessionPath, 0700, true);
 session_save_path($sessionPath);
+ini_set('session.use_strict_mode', '1');
+session_set_cookie_params(['httponly'=>true, 'samesite'=>'Lax', 'secure'=>(!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off')]);
 session_start();
 if (empty($_SESSION['archive_admin'])) { header('Location: admin.php'); exit; }
 if (empty($_SESSION['csrf'])) $_SESSION['csrf'] = bin2hex(random_bytes(24));
@@ -27,7 +29,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $networks = ['facebook','instagram','youtube','x','tiktok','linkedin']; $socials = [];
   foreach ($networks as $network) $socials[$network] = trim($_POST['social'][$network] ?? '');
   if ($email !== '' && !filter_var($email, FILTER_VALIDATE_EMAIL)) $error = 'Please enter a valid email address.';
-  foreach ($socials as $url) if (!$error && $url !== '' && !filter_var($url, FILTER_VALIDATE_URL)) $error = 'Social media links must be complete URLs beginning with http:// or https://.';
+  foreach ($socials as $url) {
+    $scheme = strtolower((string)parse_url($url, PHP_URL_SCHEME));
+    if (!$error && $url !== '' && (!filter_var($url, FILTER_VALIDATE_URL) || !in_array($scheme, ['http','https'], true))) $error = 'Social media links must be complete HTTP or HTTPS URLs.';
+  }
   if (!$error) {
     $settings['contactParish'] = trim($_POST['contactParish'] ?? '');
     $settings['contactAddress'] = trim($_POST['contactAddress'] ?? '');

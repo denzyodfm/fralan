@@ -1,0 +1,7 @@
+.login:after{background:linear-gradient(#193d3366,#193d3366),url('../images/archive-study.jpg') center/cover}
+:where(a,button,input,textarea,select):focus-visible{outline:3px solid var(--gold);outline-offset:3px}
+button,.new{min-height:44px;transition:transform .18s ease,box-shadow .18s ease,background-color .18s ease}
+button:hover,.new:hover{transform:translateY(-1px);box-shadow:0 8px 20px rgba(19,39,34,.13)}
+header{position:sticky;top:0;z-index:20}
+.editor{width:100%}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;transition-duration:.01ms!important}}

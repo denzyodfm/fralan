@@ -1,0 +1,27 @@
+:root{--shadow-sm:0 8px 24px rgba(19,39,34,.08);--shadow-lg:0 24px 70px rgba(8,25,20,.18)}
+.skip-link{position:fixed;z-index:100;top:12px;left:12px;padding:10px 16px;background:var(--ink);color:#fff;border-radius:6px;transform:translateY(-150%)}
+.skip-link:focus{transform:none}
+:where(a,button,input,select,textarea,audio):focus-visible{outline:3px solid var(--gold);outline-offset:4px}
+.site-header{position:sticky;top:0;background:color-mix(in srgb,var(--paper) 92%,transparent);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
+.brand,.site-header nav a,.button,.read,.filters button{transition:color .18s ease,background-color .18s ease,border-color .18s ease,transform .18s ease}
+.brand:hover{color:var(--green)}
+.menu-button{min-width:48px;min-height:48px;border-radius:6px;color:var(--ink);cursor:pointer}
+.menu-button:hover{background:var(--cream)}
+.hero{min-height:min(780px,calc(100svh - 88px))}
+.hero-copy{align-self:center}
+.hero-visual img,.card-image img{background:var(--cream)}
+.button:hover,.read:hover,.text-link:hover{transform:translateY(-2px)}
+.archive-search input{min-height:50px;background:var(--paper)}
+.filters button{min-height:42px;border-radius:4px}
+.filters button:hover{color:var(--ink);background:rgba(255,255,255,.55)}
+.archive-card,.journal-list>a,.intro>div{opacity:1;transform:none}
+.js .archive-card,.js .journal-list>a,.js .intro>div{opacity:0;transform:translateY(16px)}
+.js .archive-card.visible,.js .journal-list>a.visible,.js .intro>div.visible{opacity:1;transform:none}
+.archive-card{border:1px solid color-mix(in srgb,var(--line) 80%,transparent);padding:0 0 24px;border-radius:8px;overflow:hidden;background:color-mix(in srgb,var(--paper) 88%,white);box-shadow:0 1px 0 rgba(19,39,34,.03)}
+.archive-card:hover{box-shadow:var(--shadow-sm);border-color:color-mix(in srgb,var(--forest) 22%,var(--line))}
+.card-content{padding:22px 22px 0}
+.article-body a{text-decoration:underline;text-decoration-color:var(--gold);text-underline-offset:3px}
+.archive-status{min-height:1.6em;margin:0 0 14px;color:var(--muted);font-size:13px}
+@media(max-width:900px){.site-header{top:0}.site-header nav.open{border-top:1px solid var(--line);box-shadow:var(--shadow-lg)}.site-header nav a{width:100%;padding:10px 4px}.hero{min-height:auto}.hero-copy{padding-top:64px;padding-bottom:64px}.hero-actions{flex-wrap:wrap}.hero-stats{margin-top:54px}}
+@media(max-width:600px){.hero h1{font-size:clamp(48px,15vw,68px)}.hero-stats{justify-content:space-between;gap:12px}.hero-stats b{font-size:27px}.filters{width:100%;overflow-x:auto}.filters button{flex:1;white-space:nowrap}.article{padding-inline:20px}.article h1{font-size:clamp(42px,13vw,56px)}.contact-numbers a{min-height:54px}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}.js .archive-card,.js .journal-list>a,.js .intro>div{opacity:1;transform:none}}

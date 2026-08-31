@@ -2,6 +2,8 @@
 $sessionPath = __DIR__ . '/runtime/sessions';
 if (!is_dir($sessionPath)) mkdir($sessionPath, 0700, true);
 session_save_path($sessionPath);
+ini_set('session.use_strict_mode', '1');
+session_set_cookie_params(['httponly'=>true, 'samesite'=>'Lax', 'secure'=>(!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off')]);
 session_start();
 if (empty($_SESSION['archive_admin'])) { header('Location: admin.php'); exit; }
 if (empty($_SESSION['csrf'])) $_SESSION['csrf'] = bin2hex(random_bytes(24));
