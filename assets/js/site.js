@@ -27,6 +27,19 @@ document.addEventListener('click', event => {
   if (nav?.classList.contains('open') && !event.target.closest('.site-header')) closeMenu();
 });
 
+const filterGroup = document.querySelector('.filters');
+if (filterGroup && Array.isArray(window.archiveContentTypes)) {
+  const definitions = [{ key: 'all', label: 'All' }, ...window.archiveContentTypes];
+  filterGroup.replaceChildren(...definitions.map((type, index) => {
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.dataset.filter = type.key;
+    button.textContent = type.label;
+    button.classList.toggle('active', index === 0);
+    button.setAttribute('aria-pressed', String(index === 0));
+    return button;
+  }));
+}
 const filterButtons = document.querySelectorAll('.filters button');
 const searchInput = document.getElementById('archive-search');
 const archiveCards = document.querySelectorAll('.archive-card');
